@@ -5,10 +5,81 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Weather Dashboard</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='assets/css/styles.css'>
-    
+    <link rel='stylesheet' type='text/css' media='screen' href='./assets/css/styles.css'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
-    <script src='assets/js/script.js '></script>
+    <header>
+       <h1>Weather Dashboard</h1>
+    </header>
+    <main>
+        <aside>
+            <div id="search">
+                <h2>Search for a City:</h2>
+                <input type="text" id="searchCity" placeholder="New York">
+                <button id="searchButton" type="submit">Search</button>
+                <hr></hr>
+                <div id="cityButtons">
+                </div>
+            </div>
+        </aside>
+        <section class="container">
+            <div id="foreCast" class="row">
+                <div class="card col">
+                <div id="headCast">
+                <h2 id="Title"> </h2><img id="icon" src"" alt="">
+                </div>
+                <p id="Temp"></p>
+                <p id="Wind"></p>
+                <p id="Humid"></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card col text-white bg-dark" style="width: 10rem;">
+                    <div class="card-body" id="day-1">
+                        <h2 id="Title-day-1"> </h2><img id="icon-day-1" src"" alt="">
+                      <p class="card-text" id="temp-day-1"></p>
+                      <p class="card-text" id="wind-day-1"></p>
+                      <p class="card-text" id="humid-day-1"></p>
+                    </div>
+                  </div>
+                  <div class="card col text-white bg-dark" style="width: 10rem;">
+                    <div class="card-body " id="day-2">
+                        <h2 id="Title-day-2"> </h2><img id="icon-day-2" src"" alt="">
+                      <p class="card-text" id="temp-day-2"></p>
+                      <p class="card-text" id="wind-day-2"></p>
+                      <p class="card-text" id="humid-day-2"></p>
+                    </div>
+                  </div>
+                  <div class="card col text-white bg-dark" style="width: 10rem;">
+                    <div class="card-body" id="day-3">
+                        <h2 id="Title-day-3"> </h2><img id="icon-day-3" src"" alt="">
+                      <p class="card-text" id="temp-day-3"></p>
+                      <p class="card-text" id="wind-day-3"></p>
+                      <p class="card-text" id="humid-day-3"></p>
+                    </div>
+                  </div>
+                  <div class="card col text-white bg-dark" style="width: 10rem;">
+                    <div class="card-body" id="day-4">
+                        <h2 id="Title-day-4"> </h2><img id="icon-day-4" src"" alt="">
+                      <p class="card-text" id="temp-day-4"></p>
+                      <p class="card-text" id="wind-day-4"></p>
+                      <p class="card-text" id="humid-day-4"></p>
+                    </div>
+                  </div>
+                  <div class="card col text-white bg-dark" style="width: 10rem;">
+                    <div class="card-body" id="day-5">
+                        <h2 id="Title-day-5"> </h2><img id="icon-day-5" src"" alt="">
+                      <p class="card-text" id="temp-day-5"></p>
+                      <p class="card-text" id="wind-day-5"></p>
+                      <p class="card-text" id="humid-day-5"></p>
+                    </div>
+                  </div>
+              </div>
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src='./assets/js/script.js '></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>
