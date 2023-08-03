@@ -4,7 +4,9 @@ const GEO_CODE_API=`http://api.openweathermap.org/geo/1.0/direct?appid=${API_KEY
 const ICON_URL=`https://openweathermap.org/img/wn/`;
 const search=document.getElementById('searchButton');
 const searchInput=document.getElementById('searchCity');
+const MAX_ITEMS = 8;
 
+//TODO 
 async function getGeoCodes(query){
     try {
         const response = await fetch(`${GEO_CODE_API}&q=${query}&limit=1`);
@@ -12,13 +14,60 @@ async function getGeoCodes(query){
         let coords = [data[0].lat, data[0].lon];
         return coords;
     } catch (error) {
-        console.error('Error:', error);
+       Swal.fire({
+        icon:'error',
+        title:'Oops...',
+        text:"Looks like this location doesn't exist"
+       })
+       return null;
     }
 }
 
 function kelvinToCelsius(kelvin) {
     return (parseInt(kelvin) - 273.15).toFixed(2);
 }
+
+
+function addItemToArrayInLocalStorage(key, item) {
+  // Retrieve the current array from localStorage
+  const storedArrayString = localStorage.getItem(key);
+  let array = storedArrayString ? JSON.parse(storedArrayString) : [];
+
+  // Check if the item already exists in the array
+  if (!array.includes(item)) {
+    // If not, add the new item
+    array.push(item);
+
+    // Limit the array to the max number of items
+    array = array.slice(-MAX_ITEMS);
+
+    // Store the updated array back in localStorage
+    localStorage.setItem(key, JSON.stringify(array));
+
+    // Update the buttons
+    createButtonsFromArray(array);
+  } else {
+    console.log('Item already exists in the array.');
+  }
+}
+
+function createButtonsFromArray(array) {
+    // Clear existing buttons
+    $('#buttons-container').empty();
+  
+    // Create a new button for each item in the array
+    array.forEach((item) => {
+      $('<button>')
+        .text(item)
+        .addClass('history')
+        .click(function() {
+          getForecast(item);
+          get5DayForecast(item);
+        })
+        .appendTo('#buttons-container');
+    });
+  }
+  
 
 async function getForecast(query) {
         try {
@@ -50,44 +99,55 @@ async function get5DayForecast(query){
     const weatherInfo=weatherData.list;
     let v=0;
     for (let i=8;i<weatherInfo.length;i=i+7){
-        v++
+        v++;
         let date=new Date(weatherData.list[i].dt*1000);
-        console.log(weatherData.list[i].dt*1000)
         let currentDate=date.toLocaleDateString("en-US")
         let temp=kelvinToCelsius(weatherData.list[i].main.temp);
         let wind=weatherData.list[i].wind.speed;
-        let humid=weatherData.list[i].main.humidity;
-        console.log(weatherData.list[i].weather[0].icon)
+        let humid=weatherData.list[i].main.humidity;       
         let weatherIcon=weatherData.list[i].weather[0].icon;
         let icon=`${ICON_URL}${weatherIcon}@2x.png`;
         let image=document.querySelector(`#icon-day-${v}`);
-        console.log(image)
         image.src=icon;
-        console.log(icon);
         $(`#day-${v} #Title-day-${v}`).text(`${currentDate}`)
         $(`#temp-day-${v}`).html(`Temp: ${temp}&deg;C`);
         $(`#wind-day-${v}`).html(`Wind: ${wind}m/s`);
         $(`#humid-day-${v}`).html(`Humidity: ${humid}%`);
-        
-        //console.log(weatherData.list[i],v);
+
     }
 }
 
-search.addEventListener('click',function(){
-    let searchItem=document.getElementById("searchCity").value;
+search.addEventListener('click', async function () {
+  let searchItem = searchInput.value;
+  let coords = await getGeoCodes(searchItem);
+  if(coords !== null) {
     getForecast(searchItem);
     get5DayForecast(searchItem);
-})
-// getForecast(`San Diego`);
-
-
-searchInput.addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') { // Check if Enter key was pressed
-    let searchItem = searchInput.value;
-    getForecast(searchItem);
-    get5DayForecast(searchItem);
+    addItemToArrayInLocalStorage('cities', searchItem);
+    updateButtons(); // Update the buttons immediately
   }
 });
 
-// getForecast(`San Diego`);
+// Event listener for the Enter key in the search input field
+searchInput.addEventListener('keydown', async function (event) {
+  if (event.key === 'Enter') {
+    let searchItem = searchInput.value;
+    let coords = await getGeoCodes(searchItem);
+    if(coords !== null) {
+      getForecast(searchItem);
+      get5DayForecast(searchItem);
+      addItemToArrayInLocalStorage('cities', searchItem);
+      updateButtons(); // Update the buttons immediately
+    }
+  }
+});
 
+// Function to update the buttons based on local storage
+function updateButtons() {
+  const storedArrayString = localStorage.getItem('cities');
+  const array = storedArrayString ? JSON.parse(storedArrayString) : [];
+  createButtonsFromArray(array);
+}
+
+// Create initial buttons from localStorage on page load
+updateButtons();
