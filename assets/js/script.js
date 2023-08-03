@@ -1,6 +1,6 @@
 const API_KEY='7634da25c1f920f7606e94c82b1cd774';
 const API_URI=`https://api.openweathermap.org/data/2.5/forecast?appid=${API_KEY}`;
-const GEO_CODE_API=`http://api.openweathermap.org/geo/1.0/direct?appid=${API_KEY}`;
+const GEO_CODE_API=`https://api.openweathermap.org/geo/1.0/direct?appid=${API_KEY}`;
 const ICON_URL=`https://openweathermap.org/img/wn/`;
 const search=document.getElementById('searchButton');
 const searchInput=document.getElementById('searchCity');
